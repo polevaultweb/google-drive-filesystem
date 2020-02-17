@@ -36,7 +36,7 @@ class GoogleDriveFilesystem extends Filesystem {
 		if ( empty( self::$client ) ) {
 			$client = new Google_Client();
 			$client->setAccessToken( $authorizationToken );
-			self::$client =$client;
+			self::$client = $client;
 		}
 
 		return self::$client;
@@ -185,7 +185,7 @@ class GoogleDriveFilesystem extends Filesystem {
 
 			$optParams = array(
 				'fields' => 'nextPageToken, files(id, name, fileExtension)',
-				'q'      => 'name = \'' . $path_parts['filename'] . '\'',
+				'q'      => 'name = \'' . $path_parts['basename'] . '\'',
 			);
 
 			if ( $path && $parent_id ) {
@@ -195,7 +195,7 @@ class GoogleDriveFilesystem extends Filesystem {
 			$results = $this->getDrive()->files->listFiles( $optParams );
 			$files   = $results->getFiles();
 			foreach ( $files as $googleFile ) {
-				if ( $googleFile->getName() === $path_parts['filename'] ) {
+				if ( $googleFile->getName() === $path_parts['basename'] ) {
 					return $googleFile;
 				}
 			}
